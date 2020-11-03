@@ -1,0 +1,2479 @@
+#!/bin/bash
+
+
+
+
+
+########################################################################################################################
+#  /$$$$$$$  /$$                     /$$                /$$$$$                     /$$
+# | $$__  $$| $$                    | $$               |__  $$                    | $$
+# | $$  \ $$| $$  /$$$$$$   /$$$$$$$| $$   /$$            | $$  /$$$$$$   /$$$$$$$| $$   /$$
+# | $$$$$$$ | $$ |____  $$ /$$_____/| $$  /$$/            | $$ |____  $$ /$$_____/| $$  /$$/
+# | $$__  $$| $$  /$$$$$$$| $$      | $$$$$$/        /$$  | $$  /$$$$$$$| $$      | $$$$$$/
+# | $$  \ $$| $$ /$$__  $$| $$      | $$_  $$       | $$  | $$ /$$__  $$| $$      | $$_  $$
+# | $$$$$$$/| $$|  $$$$$$$|  $$$$$$$| $$ \  $$      |  $$$$$$/|  $$$$$$$|  $$$$$$$| $$ \  $$
+# |_______/ |__/ \_______/ \_______/|__/  \__/       \______/  \_______/ \_______/|__/  \__/
+#
+######################################################################################################################
+
+########################################################################################################################
+#
+# Intro art made with http://patorjk.com/software/taag/
+# 
+# This is my first bash script. I chose the BlackJack logo becasue of the dollar signs $$$
+# I had no idea $ was used so often in bash scripting, as I'm only a beginner and currently learning java. An important lesson was learned about reasearching syntax before you write a program...
+# 
+#
+# Cards were moddified from the same site.
+# 
+#  .------..------..------..------..------..------..------..------..------.
+#  |B.--. ||L.--. ||A.--. ||C.--. ||K.--. ||J.--. ||A.--. ||C.--. ||K.--. |
+#  | :(): || :/\: || (\/) || :/\: || :/\: || :(): || (\/) || :/\: || :/\: |
+#  | ()() || (__) || :\/: || :\/: || :\/: || ()() || :\/: || :\/: || :\/: |
+#  | '--'B|| '--'L|| '--'A|| '--'C|| '--'K|| '--'J|| '--'A|| '--'C|| '--'K|
+#  `------'`------'`------'`------'`------'`------'`------'`------'`------' 
+#
+#
+#  Made originally on 3/1/20 (American date)
+#
+#
+#######################################################################################################################
+
+
+
+
+
+
+
+
+####################################################################################################################
+
+# Sets colors to be used with printf
+
+# instructions found @ https://unix.stackexchange.com/questions/92563/friendly-terminal-color-names-in-shell-scripts
+
+#
+
+# Example to set color:
+
+# printf "%s\n" "Text in ${red}red${end}, white and ${blu}blue${end}."
+
+#
+
+# Better color guide at https://misc.flogisoft.com/bash/tip_colors_and_formatting
+
+#
+
+####################################################################################################################
+
+
+
+
+
+# Font color
+
+red=$'\e[91m' # Red
+
+grn=$'\e[92m' # Green
+
+yel=$'\e[93m' # Yellow
+
+blu=$'\e[94m' # Blue
+
+mag=$'\e[95m' # Magenta
+
+cyn=$'\e[96m' # Cyan
+
+pur=$'\e[35m' # Purple
+
+gry=$'\e[37m' # Grey
+
+dred=$'\e[31m' # Dark Red
+
+dgrn=$'\e[32m' # Dark Green
+
+dyel=$'\e[33m' # Dark Yellow
+
+dblu=$'\e[34m' # Dark Blue
+
+dcyn=$'\e[36m' # Dark Cyan
+
+blk=$'\e[30m' # Black
+
+
+
+# Background color
+
+backred=$'\e[101m' # Red
+
+backgrn=$'\e[102m' # Green
+
+backyel=$'\e[103m' # Yellow
+
+backblu=$'\e[104m' # Blue
+
+backmag=$'\e[105m' # Magenta
+
+backcyn=$'\e[106m' # Cyan
+
+backpur=$'\e[45m' # Purple
+
+backgry=$'\e[107m' # Grey
+
+backdred=$'\e[41m' # Dark Red
+
+backdgrn=$'\e[42m' # Dark Green
+
+backdyel=$'\e[43m' # Dark Yellow
+
+backdblu=$'\e[44m' # Dark Blue
+
+backdcyn=$'\e[46m' # Dark Cyan
+
+backdgry=$'\e[47m' # Dark Grey
+
+
+
+# Font and Background color
+
+redWhite=$'\e[0;31;47m'
+
+whiteDarkGrey=$'\e[0;33;40m'
+
+yellowDarkRed=$'\e[0;33;41m'
+
+blackRed=$'\e[0;30;41m'
+
+
+
+
+
+# End color
+
+end=$'\e[0m'
+
+
+
+
+
+welcomeScreen() {
+
+        clear
+
+        sleep 1
+
+        printf "%s" "Welcome to"
+
+        sleep 0.6
+
+        printf "%s" "."
+
+        sleep 0.6
+
+        printf "%s" "."
+
+        sleep 0.6
+
+        printf "%s\n" "."
+
+        sleep 1
+
+        clear
+
+        sleep 1
+
+
+
+        echo " "
+
+        printf "%s\n" " /${dred}\$\$\$\$\$\$\$  ${end}/${dred}\$\$                     ${end}/${dred}\$\$                ${end}/${dred}\$\$\$\$\$                     ${end}/${dred}\$\$${end}"
+
+        sleep 0.1
+
+        printf "%s\n" "| ${dred}\$\$${end}__  ${dred}\$\$${end}| ${dred}\$\$                    ${end}| ${dred}\$\$               ${end}|__  ${dred}\$\$                    ${end}| ${dred}\$\$${end}"
+
+        sleep 0.1
+
+        printf "%s\n" "| ${dred}\$\$  ${end}\\ ${dred}\$\$${end}| ${dred}\$\$  ${end}/${dred}\$\$\$\$\$\$   ${end}/${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$   ${end}/${dred}\$\$            ${end}| ${dred}\$\$  ${end}/${dred}\$\$\$\$\$\$   ${end}/${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$   ${end}/${dred}\$\$${end}"
+
+        sleep 0.1
+
+        printf "%s\n" "| ${dred}\$\$\$\$\$\$\$ ${end}| ${dred}\$\$ ${end}|____  ${dred}\$\$ ${end}/${dred}\$\$${end}_____/| ${dred}\$\$  ${end}/${dred}\$\$/            ${end}| ${dred}\$\$ ${end}|____  ${dred}\$\$ ${end}/${dred}\$\$${end}_____/| ${dred}\$\$  ${end}/${dred}\$\$${end}/"
+
+        sleep 0.1
+
+        printf "%s\n" "| ${dred}\$\$${end}__  ${dred}\$\$${end}| ${dred}\$\$  ${end}/${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$      ${end}| ${dred}\$\$\$\$\$\$${end}/        /${dred}\$$  ${end}| ${dred}\$\$  ${end}/${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$      ${end}| ${dred}\$\$\$\$\$\$${end}/"
+
+        sleep 0.1
+
+        printf "%s\n" "| ${dred}\$\$  ${end}\\ ${dred}\$\$${end}| ${dred}\$\$ ${end}/${dred}\$\$${end}__  ${dred}\$\$${end}| ${dred}\$\$      ${end}| ${dred}\$\$${end}_  ${dred}\$\$       ${end}| ${dred}\$\$  ${end}| ${dred}\$\$ ${end}/${dred}\$\$${end}__  ${dred}\$\$${end}| ${dred}\$\$      ${end}| ${dred}\$\$${end}_  ${dred}\$\$${end}"
+
+        sleep 0.1
+
+        printf "%s\n" "| ${dred}\$\$\$\$\$\$\$${end}/| ${dred}\$\$${end}|  ${dred}\$\$\$\$\$\$\$${end}|  ${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$ ${end}\\  ${dred}\$\$      ${end}|  ${dred}\$\$\$\$\$\$/${end}|  ${dred}\$\$\$\$\$\$\$${end}|  ${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$ ${end}\\  ${dred}\$\$${end}"
+
+        sleep 0.1
+
+        printf "%s\n" "|_______/ |__/ \\_______/ \\_______/|__/  \\__/       \\______/  \\_______/ \\_______/|__/  \\__/"
+
+        flashScreenBlackJack
+
+        flashScreenBlackJack
+
+        main
+
+}
+
+
+
+flashScreenBlackJack() {
+
+
+
+
+
+        clear
+
+        # Dark Red
+
+        echo " "
+
+        printf "%s\n" " /${dred}\$\$\$\$\$\$\$  ${end}/${dred}\$\$                     ${end}/${dred}\$\$                ${end}/${dred}\$\$\$\$\$                     ${end}/${dred}\$\$${end}"
+
+        printf "%s\n" "| ${dred}\$\$${end}__  ${dred}\$\$${end}| ${dred}\$\$                    ${end}| ${dred}\$\$               ${end}|__  ${dred}\$\$                    ${end}| ${dred}\$\$${end}"
+
+        printf "%s\n" "| ${dred}\$\$  ${end}\\ ${dred}\$\$${end}| ${dred}\$\$  ${end}/${dred}\$\$\$\$\$\$   ${end}/${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$   ${end}/${dred}\$\$            ${end}| ${dred}\$\$  ${end}/${dred}\$\$\$\$\$\$   ${end}/${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$   ${end}/${dred}\$\$${end}"
+
+        printf "%s\n" "| ${dred}\$\$\$\$\$\$\$ ${end}| ${dred}\$\$ ${end}|____  ${dred}\$\$ ${end}/${dred}\$\$${end}_____/| ${dred}\$\$  ${end}/${dred}\$\$/            ${end}| ${dred}\$\$ ${end}|____  ${dred}\$\$ ${end}/${dred}\$\$${end}_____/| ${dred}\$\$  ${end}/${dred}\$\$${end}/"
+
+        printf "%s\n" "| ${dred}\$\$${end}__  ${dred}\$\$${end}| ${dred}\$\$  ${end}/${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$      ${end}| ${dred}\$\$\$\$\$\$${end}/        /${dred}\$$  ${end}| ${dred}\$\$  ${end}/${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$      ${end}| ${dred}\$\$\$\$\$\$${end}/"
+
+        printf "%s\n" "| ${dred}\$\$  ${end}\\ ${dred}\$\$${end}| ${dred}\$\$ ${end}/${dred}\$\$${end}__  ${dred}\$\$${end}| ${dred}\$\$      ${end}| ${dred}\$\$${end}_  ${dred}\$\$       ${end}| ${dred}\$\$  ${end}| ${dred}\$\$ ${end}/${dred}\$\$${end}__  ${dred}\$\$${end}| ${dred}\$\$      ${end}| ${dred}\$\$${end}_  ${dred}\$\$${end}"
+
+        printf "%s\n" "| ${dred}\$\$\$\$\$\$\$${end}/| ${dred}\$\$${end}|  ${dred}\$\$\$\$\$\$\$${end}|  ${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$ ${end}\\  ${dred}\$\$      ${end}|  ${dred}\$\$\$\$\$\$/${end}|  ${dred}\$\$\$\$\$\$\$${end}|  ${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$ ${end}\\  ${dred}\$\$${end}"
+
+        printf "%s\n" "|_______/ |__/ \\_______/ \\_______/|__/  \\__/       \\______/  \\_______/ \\_______/|__/  \\__/"
+
+        sleep 0.05
+
+
+
+        clear
+
+        # Red
+
+        echo " "
+
+        printf "%s\n" " /${red}\$\$\$\$\$\$\$  ${end}/${red}\$\$                     ${end}/${red}\$\$                ${end}/${red}\$\$\$\$\$                     ${end}/${red}\$\$${end}"
+
+        printf "%s\n" "| ${red}\$\$${end}__  ${red}\$\$${end}| ${red}\$\$                    ${end}| ${red}\$\$               ${end}|__  ${red}\$\$                    ${end}| ${red}\$\$${end}"
+
+        printf "%s\n" "| ${red}\$\$  ${end}\\ ${red}\$\$${end}| ${red}\$\$  ${end}/${red}\$\$\$\$\$\$   ${end}/${red}\$\$\$\$\$\$\$${end}| ${red}\$\$   ${end}/${red}\$\$            ${end}| ${red}\$\$  ${end}/${red}\$\$\$\$\$\$   ${end}/${red}\$\$\$\$\$\$\$${end}| ${red}\$\$   ${end}/${red}\$\$${end}"
+
+        printf "%s\n" "| ${red}\$\$\$\$\$\$\$ ${end}| ${red}\$\$ ${end}|____  ${red}\$\$ ${end}/${red}\$\$${end}_____/| ${red}\$\$  ${end}/${red}\$\$/            ${end}| ${red}\$\$ ${end}|____  ${red}\$\$ ${end}/${red}\$\$${end}_____/| ${red}\$\$  ${end}/${red}\$\$${end}/"
+
+        printf "%s\n" "| ${red}\$\$${end}__  ${red}\$\$${end}| ${red}\$\$  ${end}/${red}\$\$\$\$\$\$\$${end}| ${red}\$\$      ${end}| ${red}\$\$\$\$\$\$${end}/        /${red}\$$  ${end}| ${red}\$\$  ${end}/${red}\$\$\$\$\$\$\$${end}| ${red}\$\$      ${end}| ${red}\$\$\$\$\$\$${end}/"
+
+        printf "%s\n" "| ${red}\$\$  ${end}\\ ${red}\$\$${end}| ${red}\$\$ ${end}/${red}\$\$${end}__  ${red}\$\$${end}| ${red}\$\$      ${end}| ${red}\$\$${end}_  ${red}\$\$       ${end}| ${red}\$\$  ${end}| ${red}\$\$ ${end}/${red}\$\$${end}__  ${red}\$\$${end}| ${red}\$\$      ${end}| ${red}\$\$${end}_  ${red}\$\$${end}"
+
+        printf "%s\n" "| ${red}\$\$\$\$\$\$\$${end}/| ${red}\$\$${end}|  ${red}\$\$\$\$\$\$\$${end}|  ${red}\$\$\$\$\$\$\$${end}| ${red}\$\$ ${end}\\  ${red}\$\$      ${end}|  ${red}\$\$\$\$\$\$/${end}|  ${red}\$\$\$\$\$\$\$${end}|  ${red}\$\$\$\$\$\$\$${end}| ${red}\$\$ ${end}\\  ${red}\$\$${end}"
+
+        printf "%s\n" "|_______/ |__/ \\_______/ \\_______/|__/  \\__/       \\______/  \\_______/ \\_______/|__/  \\__/"
+
+        sleep 0.05
+
+
+
+        clear
+
+        # Dark Yellow
+
+        echo " "
+
+        printf "%s\n" " /${dyel}\$\$\$\$\$\$\$  ${end}/${dyel}\$\$                     ${end}/${dyel}\$\$                ${end}/${dyel}\$\$\$\$\$                     ${end}/${dyel}\$\$${end}"
+
+        printf "%s\n" "| ${dyel}\$\$${end}__  ${dyel}\$\$${end}| ${dyel}\$\$                    ${end}| ${dyel}\$\$               ${end}|__  ${dyel}\$\$                    ${end}| ${dyel}\$\$${end}"
+
+        printf "%s\n" "| ${dyel}\$\$  ${end}\\ ${dyel}\$\$${end}| ${dyel}\$\$  ${end}/${dyel}\$\$\$\$\$\$   ${end}/${dyel}\$\$\$\$\$\$\$${end}| ${dyel}\$\$   ${end}/${dyel}\$\$            ${end}| ${dyel}\$\$  ${end}/${dyel}\$\$\$\$\$\$   ${end}/${dyel}\$\$\$\$\$\$\$${end}| ${dyel}\$\$   ${end}/${dyel}\$\$${end}"
+
+        printf "%s\n" "| ${dyel}\$\$\$\$\$\$\$ ${end}| ${dyel}\$\$ ${end}|____  ${dyel}\$\$ ${end}/${dyel}\$\$${end}_____/| ${dyel}\$\$  ${end}/${dyel}\$\$/            ${end}| ${dyel}\$\$ ${end}|____  ${dyel}\$\$ ${end}/${dyel}\$\$${end}_____/| ${dyel}\$\$  ${end}/${dyel}\$\$${end}/"
+
+        printf "%s\n" "| ${dyel}\$\$${end}__  ${dyel}\$\$${end}| ${dyel}\$\$  ${end}/${dyel}\$\$\$\$\$\$\$${end}| ${dyel}\$\$      ${end}| ${dyel}\$\$\$\$\$\$${end}/        /${dyel}\$$  ${end}| ${dyel}\$\$  ${end}/${dyel}\$\$\$\$\$\$\$${end}| ${dyel}\$\$      ${end}| ${dyel}\$\$\$\$\$\$${end}/"
+
+        printf "%s\n" "| ${dyel}\$\$  ${end}\\ ${dyel}\$\$${end}| ${dyel}\$\$ ${end}/${dyel}\$\$${end}__  ${dyel}\$\$${end}| ${dyel}\$\$      ${end}| ${dyel}\$\$${end}_  ${dyel}\$\$       ${end}| ${dyel}\$\$  ${end}| ${dyel}\$\$ ${end}/${dyel}\$\$${end}__  ${dyel}\$\$${end}| ${dyel}\$\$      ${end}| ${dyel}\$\$${end}_  ${dyel}\$\$${end}"
+
+        printf "%s\n" "| ${dyel}\$\$\$\$\$\$\$${end}/| ${dyel}\$\$${end}|  ${dyel}\$\$\$\$\$\$\$${end}|  ${dyel}\$\$\$\$\$\$\$${end}| ${dyel}\$\$ ${end}\\  ${dyel}\$\$      ${end}|  ${dyel}\$\$\$\$\$\$/${end}|  ${dyel}\$\$\$\$\$\$\$${end}|  ${dyel}\$\$\$\$\$\$\$${end}| ${dyel}\$\$ ${end}\\  ${dyel}\$\$${end}"
+
+        printf "%s\n" "|_______/ |__/ \\_______/ \\_______/|__/  \\__/       \\______/  \\_______/ \\_______/|__/  \\__/"
+
+        sleep 0.05
+
+
+
+        clear
+
+        # Yellow
+
+        echo " "
+
+        printf "%s\n" " /${yel}\$\$\$\$\$\$\$  ${end}/${yel}\$\$                     ${end}/${yel}\$\$                ${end}/${yel}\$\$\$\$\$                     ${end}/${yel}\$\$${end}"
+
+        printf "%s\n" "| ${yel}\$\$${end}__  ${yel}\$\$${end}| ${yel}\$\$                    ${end}| ${yel}\$\$               ${end}|__  ${yel}\$\$                    ${end}| ${yel}\$\$${end}"
+
+        printf "%s\n" "| ${yel}\$\$  ${end}\\ ${yel}\$\$${end}| ${yel}\$\$  ${end}/${yel}\$\$\$\$\$\$   ${end}/${yel}\$\$\$\$\$\$\$${end}| ${yel}\$\$   ${end}/${yel}\$\$            ${end}| ${yel}\$\$  ${end}/${yel}\$\$\$\$\$\$   ${end}/${yel}\$\$\$\$\$\$\$${end}| ${yel}\$\$   ${end}/${yel}\$\$${end}"
+
+        printf "%s\n" "| ${yel}\$\$\$\$\$\$\$ ${end}| ${yel}\$\$ ${end}|____  ${yel}\$\$ ${end}/${yel}\$\$${end}_____/| ${yel}\$\$  ${end}/${yel}\$\$/            ${end}| ${yel}\$\$ ${end}|____  ${yel}\$\$ ${end}/${yel}\$\$${end}_____/| ${yel}\$\$  ${end}/${yel}\$\$${end}/"
+
+        printf "%s\n" "| ${yel}\$\$${end}__  ${yel}\$\$${end}| ${yel}\$\$  ${end}/${yel}\$\$\$\$\$\$\$${end}| ${yel}\$\$      ${end}| ${yel}\$\$\$\$\$\$${end}/        /${yel}\$$  ${end}| ${yel}\$\$  ${end}/${yel}\$\$\$\$\$\$\$${end}| ${yel}\$\$      ${end}| ${yel}\$\$\$\$\$\$${end}/"
+
+        printf "%s\n" "| ${yel}\$\$  ${end}\\ ${yel}\$\$${end}| ${yel}\$\$ ${end}/${yel}\$\$${end}__  ${yel}\$\$${end}| ${yel}\$\$      ${end}| ${yel}\$\$${end}_  ${yel}\$\$       ${end}| ${yel}\$\$  ${end}| ${yel}\$\$ ${end}/${yel}\$\$${end}__  ${yel}\$\$${end}| ${yel}\$\$      ${end}| ${yel}\$\$${end}_  ${yel}\$\$${end}"
+
+        printf "%s\n" "| ${yel}\$\$\$\$\$\$\$${end}/| ${yel}\$\$${end}|  ${yel}\$\$\$\$\$\$\$${end}|  ${yel}\$\$\$\$\$\$\$${end}| ${yel}\$\$ ${end}\\  ${yel}\$\$      ${end}|  ${yel}\$\$\$\$\$\$/${end}|  ${yel}\$\$\$\$\$\$\$${end}|  ${yel}\$\$\$\$\$\$\$${end}| ${yel}\$\$ ${end}\\  ${yel}\$\$${end}"
+
+        printf "%s\n" "|_______/ |__/ \\_______/ \\_______/|__/  \\__/       \\______/  \\_______/ \\_______/|__/  \\__/"
+
+        sleep 0.05
+
+
+
+        clear
+
+        # Green
+
+        echo " "
+
+        printf "%s\n" " /${grn}\$\$\$\$\$\$\$  ${end}/${grn}\$\$                     ${end}/${grn}\$\$                ${end}/${grn}\$\$\$\$\$                     ${end}/${grn}\$\$${end}"
+
+        printf "%s\n" "| ${grn}\$\$${end}__  ${grn}\$\$${end}| ${grn}\$\$                    ${end}| ${grn}\$\$               ${end}|__  ${grn}\$\$                    ${end}| ${grn}\$\$${end}"
+
+        printf "%s\n" "| ${grn}\$\$  ${end}\\ ${grn}\$\$${end}| ${grn}\$\$  ${end}/${grn}\$\$\$\$\$\$   ${end}/${grn}\$\$\$\$\$\$\$${end}| ${grn}\$\$   ${end}/${grn}\$\$            ${end}| ${grn}\$\$  ${end}/${grn}\$\$\$\$\$\$   ${end}/${grn}\$\$\$\$\$\$\$${end}| ${grn}\$\$   ${end}/${grn}\$\$${end}"
+
+        printf "%s\n" "| ${grn}\$\$\$\$\$\$\$ ${end}| ${grn}\$\$ ${end}|____  ${grn}\$\$ ${end}/${grn}\$\$${end}_____/| ${grn}\$\$  ${end}/${grn}\$\$/            ${end}| ${grn}\$\$ ${end}|____  ${grn}\$\$ ${end}/${grn}\$\$${end}_____/| ${grn}\$\$  ${end}/${grn}\$\$${end}/"
+
+        printf "%s\n" "| ${grn}\$\$${end}__  ${grn}\$\$${end}| ${grn}\$\$  ${end}/${grn}\$\$\$\$\$\$\$${end}| ${grn}\$\$      ${end}| ${grn}\$\$\$\$\$\$${end}/        /${grn}\$$  ${end}| ${grn}\$\$  ${end}/${grn}\$\$\$\$\$\$\$${end}| ${grn}\$\$      ${end}| ${grn}\$\$\$\$\$\$${end}/"
+
+        printf "%s\n" "| ${grn}\$\$  ${end}\\ ${grn}\$\$${end}| ${grn}\$\$ ${end}/${grn}\$\$${end}__  ${grn}\$\$${end}| ${grn}\$\$      ${end}| ${grn}\$\$${end}_  ${grn}\$\$       ${end}| ${grn}\$\$  ${end}| ${grn}\$\$ ${end}/${grn}\$\$${end}__  ${grn}\$\$${end}| ${grn}\$\$      ${end}| ${grn}\$\$${end}_  ${grn}\$\$${end}"
+
+        printf "%s\n" "| ${grn}\$\$\$\$\$\$\$${end}/| ${grn}\$\$${end}|  ${grn}\$\$\$\$\$\$\$${end}|  ${grn}\$\$\$\$\$\$\$${end}| ${grn}\$\$ ${end}\\  ${grn}\$\$      ${end}|  ${grn}\$\$\$\$\$\$/${end}|  ${grn}\$\$\$\$\$\$\$${end}|  ${grn}\$\$\$\$\$\$\$${end}| ${grn}\$\$ ${end}\\  ${grn}\$\$${end}"
+
+        printf "%s\n" "|_______/ |__/ \\_______/ \\_______/|__/  \\__/       \\______/  \\_______/ \\_______/|__/  \\__/"
+
+        sleep 0.05
+
+
+
+        clear
+
+        # Dark Green
+
+        echo " "
+
+        printf "%s\n" " /${dgrn}\$\$\$\$\$\$\$  ${end}/${dgrn}\$\$                     ${end}/${dgrn}\$\$                ${end}/${dgrn}\$\$\$\$\$                     ${end}/${dgrn}\$\$${end}"
+
+        printf "%s\n" "| ${dgrn}\$\$${end}__  ${dgrn}\$\$${end}| ${dgrn}\$\$                    ${end}| ${dgrn}\$\$               ${end}|__  ${dgrn}\$\$                    ${end}| ${dgrn}\$\$${end}"
+
+        printf "%s\n" "| ${dgrn}\$\$  ${end}\\ ${dgrn}\$\$${end}| ${dgrn}\$\$  ${end}/${dgrn}\$\$\$\$\$\$   ${end}/${dgrn}\$\$\$\$\$\$\$${end}| ${dgrn}\$\$   ${end}/${dgrn}\$\$            ${end}| ${dgrn}\$\$  ${end}/${dgrn}\$\$\$\$\$\$   ${end}/${dgrn}\$\$\$\$\$\$\$${end}| ${dgrn}\$\$   ${end}/${dgrn}\$\$${end}"
+
+        printf "%s\n" "| ${dgrn}\$\$\$\$\$\$\$ ${end}| ${dgrn}\$\$ ${end}|____  ${dgrn}\$\$ ${end}/${dgrn}\$\$${end}_____/| ${dgrn}\$\$  ${end}/${dgrn}\$\$/            ${end}| ${dgrn}\$\$ ${end}|____  ${dgrn}\$\$ ${end}/${dgrn}\$\$${end}_____/| ${dgrn}\$\$  ${end}/${dgrn}\$\$${end}/"
+
+        printf "%s\n" "| ${dgrn}\$\$${end}__  ${dgrn}\$\$${end}| ${dgrn}\$\$  ${end}/${dgrn}\$\$\$\$\$\$\$${end}| ${dgrn}\$\$      ${end}| ${dgrn}\$\$\$\$\$\$${end}/        /${dgrn}\$$  ${end}| ${dgrn}\$\$  ${end}/${dgrn}\$\$\$\$\$\$\$${end}| ${dgrn}\$\$      ${end}| ${dgrn}\$\$\$\$\$\$${end}/"
+
+        printf "%s\n" "| ${dgrn}\$\$  ${end}\\ ${dgrn}\$\$${end}| ${dgrn}\$\$ ${end}/${dgrn}\$\$${end}__  ${dgrn}\$\$${end}| ${dgrn}\$\$      ${end}| ${dgrn}\$\$${end}_  ${dgrn}\$\$       ${end}| ${dgrn}\$\$  ${end}| ${dgrn}\$\$ ${end}/${dgrn}\$\$${end}__  ${dgrn}\$\$${end}| ${dgrn}\$\$      ${end}| ${dgrn}\$\$${end}_  ${dgrn}\$\$${end}"
+
+        printf "%s\n" "| ${dgrn}\$\$\$\$\$\$\$${end}/| ${dgrn}\$\$${end}|  ${dgrn}\$\$\$\$\$\$\$${end}|  ${dgrn}\$\$\$\$\$\$\$${end}| ${dgrn}\$\$ ${end}\\  ${dgrn}\$\$      ${end}|  ${dgrn}\$\$\$\$\$\$/${end}|  ${dgrn}\$\$\$\$\$\$\$${end}|  ${dgrn}\$\$\$\$\$\$\$${end}| ${dgrn}\$\$ ${end}\\  ${dgrn}\$\$${end}"
+
+        printf "%s\n" "|_______/ |__/ \\_______/ \\_______/|__/  \\__/       \\______/  \\_______/ \\_______/|__/  \\__/"
+
+        sleep 0.05
+
+
+
+        clear
+
+        # Green
+
+        echo " "
+
+        printf "%s\n" " /${grn}\$\$\$\$\$\$\$  ${end}/${grn}\$\$                     ${end}/${grn}\$\$                ${end}/${grn}\$\$\$\$\$                     ${end}/${grn}\$\$${end}"
+
+        printf "%s\n" "| ${grn}\$\$${end}__  ${grn}\$\$${end}| ${grn}\$\$                    ${end}| ${grn}\$\$               ${end}|__  ${grn}\$\$                    ${end}| ${grn}\$\$${end}"
+
+        printf "%s\n" "| ${grn}\$\$  ${end}\\ ${grn}\$\$${end}| ${grn}\$\$  ${end}/${grn}\$\$\$\$\$\$   ${end}/${grn}\$\$\$\$\$\$\$${end}| ${grn}\$\$   ${end}/${grn}\$\$            ${end}| ${grn}\$\$  ${end}/${grn}\$\$\$\$\$\$   ${end}/${grn}\$\$\$\$\$\$\$${end}| ${grn}\$\$   ${end}/${grn}\$\$${end}"
+
+        printf "%s\n" "| ${grn}\$\$\$\$\$\$\$ ${end}| ${grn}\$\$ ${end}|____  ${grn}\$\$ ${end}/${grn}\$\$${end}_____/| ${grn}\$\$  ${end}/${grn}\$\$/            ${end}| ${grn}\$\$ ${end}|____  ${grn}\$\$ ${end}/${grn}\$\$${end}_____/| ${grn}\$\$  ${end}/${grn}\$\$${end}/"
+
+        printf "%s\n" "| ${grn}\$\$${end}__  ${grn}\$\$${end}| ${grn}\$\$  ${end}/${grn}\$\$\$\$\$\$\$${end}| ${grn}\$\$      ${end}| ${grn}\$\$\$\$\$\$${end}/        /${grn}\$$  ${end}| ${grn}\$\$  ${end}/${grn}\$\$\$\$\$\$\$${end}| ${grn}\$\$      ${end}| ${grn}\$\$\$\$\$\$${end}/"
+
+        printf "%s\n" "| ${grn}\$\$  ${end}\\ ${grn}\$\$${end}| ${grn}\$\$ ${end}/${grn}\$\$${end}__  ${grn}\$\$${end}| ${grn}\$\$      ${end}| ${grn}\$\$${end}_  ${grn}\$\$       ${end}| ${grn}\$\$  ${end}| ${grn}\$\$ ${end}/${grn}\$\$${end}__  ${grn}\$\$${end}| ${grn}\$\$      ${end}| ${grn}\$\$${end}_  ${grn}\$\$${end}"
+
+        printf "%s\n" "| ${grn}\$\$\$\$\$\$\$${end}/| ${grn}\$\$${end}|  ${grn}\$\$\$\$\$\$\$${end}|  ${grn}\$\$\$\$\$\$\$${end}| ${grn}\$\$ ${end}\\  ${grn}\$\$      ${end}|  ${grn}\$\$\$\$\$\$/${end}|  ${grn}\$\$\$\$\$\$\$${end}|  ${grn}\$\$\$\$\$\$\$${end}| ${grn}\$\$ ${end}\\  ${grn}\$\$${end}"
+
+        printf "%s\n" "|_______/ |__/ \\_______/ \\_______/|__/  \\__/       \\______/  \\_______/ \\_______/|__/  \\__/"
+
+        sleep 0.05
+
+
+
+        clear
+
+        # Yellow
+
+        echo " "
+
+        printf "%s\n" " /${yel}\$\$\$\$\$\$\$  ${end}/${yel}\$\$                     ${end}/${yel}\$\$                ${end}/${yel}\$\$\$\$\$                     ${end}/${yel}\$\$${end}"
+
+        printf "%s\n" "| ${yel}\$\$${end}__  ${yel}\$\$${end}| ${yel}\$\$                    ${end}| ${yel}\$\$               ${end}|__  ${yel}\$\$                    ${end}| ${yel}\$\$${end}"
+
+        printf "%s\n" "| ${yel}\$\$  ${end}\\ ${yel}\$\$${end}| ${yel}\$\$  ${end}/${yel}\$\$\$\$\$\$   ${end}/${yel}\$\$\$\$\$\$\$${end}| ${yel}\$\$   ${end}/${yel}\$\$            ${end}| ${yel}\$\$  ${end}/${yel}\$\$\$\$\$\$   ${end}/${yel}\$\$\$\$\$\$\$${end}| ${yel}\$\$   ${end}/${yel}\$\$${end}"
+
+        printf "%s\n" "| ${yel}\$\$\$\$\$\$\$ ${end}| ${yel}\$\$ ${end}|____  ${yel}\$\$ ${end}/${yel}\$\$${end}_____/| ${yel}\$\$  ${end}/${yel}\$\$/            ${end}| ${yel}\$\$ ${end}|____  ${yel}\$\$ ${end}/${yel}\$\$${end}_____/| ${yel}\$\$  ${end}/${yel}\$\$${end}/"
+
+        printf "%s\n" "| ${yel}\$\$${end}__  ${yel}\$\$${end}| ${yel}\$\$  ${end}/${yel}\$\$\$\$\$\$\$${end}| ${yel}\$\$      ${end}| ${yel}\$\$\$\$\$\$${end}/        /${yel}\$$  ${end}| ${yel}\$\$  ${end}/${yel}\$\$\$\$\$\$\$${end}| ${yel}\$\$      ${end}| ${yel}\$\$\$\$\$\$${end}/"
+
+        printf "%s\n" "| ${yel}\$\$  ${end}\\ ${yel}\$\$${end}| ${yel}\$\$ ${end}/${yel}\$\$${end}__  ${yel}\$\$${end}| ${yel}\$\$      ${end}| ${yel}\$\$${end}_  ${yel}\$\$       ${end}| ${yel}\$\$  ${end}| ${yel}\$\$ ${end}/${yel}\$\$${end}__  ${yel}\$\$${end}| ${yel}\$\$      ${end}| ${yel}\$\$${end}_  ${yel}\$\$${end}"
+
+        printf "%s\n" "| ${yel}\$\$\$\$\$\$\$${end}/| ${yel}\$\$${end}|  ${yel}\$\$\$\$\$\$\$${end}|  ${yel}\$\$\$\$\$\$\$${end}| ${yel}\$\$ ${end}\\  ${yel}\$\$      ${end}|  ${yel}\$\$\$\$\$\$/${end}|  ${yel}\$\$\$\$\$\$\$${end}|  ${yel}\$\$\$\$\$\$\$${end}| ${yel}\$\$ ${end}\\  ${yel}\$\$${end}"
+
+        printf "%s\n" "|_______/ |__/ \\_______/ \\_______/|__/  \\__/       \\______/  \\_______/ \\_______/|__/  \\__/"
+
+        sleep 0.05
+
+
+
+        clear
+
+        # Dark Yellow
+
+        echo " "
+
+        printf "%s\n" " /${dyel}\$\$\$\$\$\$\$  ${end}/${dyel}\$\$                     ${end}/${dyel}\$\$                ${end}/${dyel}\$\$\$\$\$                     ${end}/${dyel}\$\$${end}"
+
+        printf "%s\n" "| ${dyel}\$\$${end}__  ${dyel}\$\$${end}| ${dyel}\$\$                    ${end}| ${dyel}\$\$               ${end}|__  ${dyel}\$\$                    ${end}| ${dyel}\$\$${end}"
+
+        printf "%s\n" "| ${dyel}\$\$  ${end}\\ ${dyel}\$\$${end}| ${dyel}\$\$  ${end}/${dyel}\$\$\$\$\$\$   ${end}/${dyel}\$\$\$\$\$\$\$${end}| ${dyel}\$\$   ${end}/${dyel}\$\$            ${end}| ${dyel}\$\$  ${end}/${dyel}\$\$\$\$\$\$   ${end}/${dyel}\$\$\$\$\$\$\$${end}| ${dyel}\$\$   ${end}/${dyel}\$\$${end}"
+
+        printf "%s\n" "| ${dyel}\$\$\$\$\$\$\$ ${end}| ${dyel}\$\$ ${end}|____  ${dyel}\$\$ ${end}/${dyel}\$\$${end}_____/| ${dyel}\$\$  ${end}/${dyel}\$\$/            ${end}| ${dyel}\$\$ ${end}|____  ${dyel}\$\$ ${end}/${dyel}\$\$${end}_____/| ${dyel}\$\$  ${end}/${dyel}\$\$${end}/"
+
+        printf "%s\n" "| ${dyel}\$\$${end}__  ${dyel}\$\$${end}| ${dyel}\$\$  ${end}/${dyel}\$\$\$\$\$\$\$${end}| ${dyel}\$\$      ${end}| ${dyel}\$\$\$\$\$\$${end}/        /${dyel}\$$  ${end}| ${dyel}\$\$  ${end}/${dyel}\$\$\$\$\$\$\$${end}| ${dyel}\$\$      ${end}| ${dyel}\$\$\$\$\$\$${end}/"
+
+        printf "%s\n" "| ${dyel}\$\$  ${end}\\ ${dyel}\$\$${end}| ${dyel}\$\$ ${end}/${dyel}\$\$${end}__  ${dyel}\$\$${end}| ${dyel}\$\$      ${end}| ${dyel}\$\$${end}_  ${dyel}\$\$       ${end}| ${dyel}\$\$  ${end}| ${dyel}\$\$ ${end}/${dyel}\$\$${end}__  ${dyel}\$\$${end}| ${dyel}\$\$      ${end}| ${dyel}\$\$${end}_  ${dyel}\$\$${end}"
+
+        printf "%s\n" "| ${dyel}\$\$\$\$\$\$\$${end}/| ${dyel}\$\$${end}|  ${dyel}\$\$\$\$\$\$\$${end}|  ${dyel}\$\$\$\$\$\$\$${end}| ${dyel}\$\$ ${end}\\  ${dyel}\$\$      ${end}|  ${dyel}\$\$\$\$\$\$/${end}|  ${dyel}\$\$\$\$\$\$\$${end}|  ${dyel}\$\$\$\$\$\$\$${end}| ${dyel}\$\$ ${end}\\  ${dyel}\$\$${end}"
+
+        printf "%s\n" "|_______/ |__/ \\_______/ \\_______/|__/  \\__/       \\______/  \\_______/ \\_______/|__/  \\__/"
+
+        sleep 0.05
+
+
+
+        clear
+
+        # Red
+
+        echo " "
+
+        printf "%s\n" " /${red}\$\$\$\$\$\$\$  ${end}/${red}\$\$                     ${end}/${red}\$\$                ${end}/${red}\$\$\$\$\$                     ${end}/${red}\$\$${end}"
+
+        printf "%s\n" "| ${red}\$\$${end}__  ${red}\$\$${end}| ${red}\$\$                    ${end}| ${red}\$\$               ${end}|__  ${red}\$\$                    ${end}| ${red}\$\$${end}"
+
+        printf "%s\n" "| ${red}\$\$  ${end}\\ ${red}\$\$${end}| ${red}\$\$  ${end}/${red}\$\$\$\$\$\$   ${end}/${red}\$\$\$\$\$\$\$${end}| ${red}\$\$   ${end}/${red}\$\$            ${end}| ${red}\$\$  ${end}/${red}\$\$\$\$\$\$   ${end}/${red}\$\$\$\$\$\$\$${end}| ${red}\$\$   ${end}/${red}\$\$${end}"
+
+        printf "%s\n" "| ${red}\$\$\$\$\$\$\$ ${end}| ${red}\$\$ ${end}|____  ${red}\$\$ ${end}/${red}\$\$${end}_____/| ${red}\$\$  ${end}/${red}\$\$/            ${end}| ${red}\$\$ ${end}|____  ${red}\$\$ ${end}/${red}\$\$${end}_____/| ${red}\$\$  ${end}/${red}\$\$${end}/"
+
+        printf "%s\n" "| ${red}\$\$${end}__  ${red}\$\$${end}| ${red}\$\$  ${end}/${red}\$\$\$\$\$\$\$${end}| ${red}\$\$      ${end}| ${red}\$\$\$\$\$\$${end}/        /${red}\$$  ${end}| ${red}\$\$  ${end}/${red}\$\$\$\$\$\$\$${end}| ${red}\$\$      ${end}| ${red}\$\$\$\$\$\$${end}/"
+
+        printf "%s\n" "| ${red}\$\$  ${end}\\ ${red}\$\$${end}| ${red}\$\$ ${end}/${red}\$\$${end}__  ${red}\$\$${end}| ${red}\$\$      ${end}| ${red}\$\$${end}_  ${red}\$\$       ${end}| ${red}\$\$  ${end}| ${red}\$\$ ${end}/${red}\$\$${end}__  ${red}\$\$${end}| ${red}\$\$      ${end}| ${red}\$\$${end}_  ${red}\$\$${end}"
+
+        printf "%s\n" "| ${red}\$\$\$\$\$\$\$${end}/| ${red}\$\$${end}|  ${red}\$\$\$\$\$\$\$${end}|  ${red}\$\$\$\$\$\$\$${end}| ${red}\$\$ ${end}\\  ${red}\$\$      ${end}|  ${red}\$\$\$\$\$\$/${end}|  ${red}\$\$\$\$\$\$\$${end}|  ${red}\$\$\$\$\$\$\$${end}| ${red}\$\$ ${end}\\  ${red}\$\$${end}"
+
+        printf "%s\n" "|_______/ |__/ \\_______/ \\_______/|__/  \\__/       \\______/  \\_______/ \\_______/|__/  \\__/"
+
+        sleep 0.05
+
+
+
+        clear
+
+        # Dark Red
+
+        echo " "
+
+        printf "%s\n" " /${dred}\$\$\$\$\$\$\$  ${end}/${dred}\$\$                     ${end}/${dred}\$\$                ${end}/${dred}\$\$\$\$\$                     ${end}/${dred}\$\$${end}"
+
+        printf "%s\n" "| ${dred}\$\$${end}__  ${dred}\$\$${end}| ${dred}\$\$                    ${end}| ${dred}\$\$               ${end}|__  ${dred}\$\$                    ${end}| ${dred}\$\$${end}"
+
+        printf "%s\n" "| ${dred}\$\$  ${end}\\ ${dred}\$\$${end}| ${dred}\$\$  ${end}/${dred}\$\$\$\$\$\$   ${end}/${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$   ${end}/${dred}\$\$            ${end}| ${dred}\$\$  ${end}/${dred}\$\$\$\$\$\$   ${end}/${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$   ${end}/${dred}\$\$${end}"
+
+        printf "%s\n" "| ${dred}\$\$\$\$\$\$\$ ${end}| ${dred}\$\$ ${end}|____  ${dred}\$\$ ${end}/${dred}\$\$${end}_____/| ${dred}\$\$  ${end}/${dred}\$\$/            ${end}| ${dred}\$\$ ${end}|____  ${dred}\$\$ ${end}/${dred}\$\$${end}_____/| ${dred}\$\$  ${end}/${dred}\$\$${end}/"
+
+        printf "%s\n" "| ${dred}\$\$${end}__  ${dred}\$\$${end}| ${dred}\$\$  ${end}/${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$      ${end}| ${dred}\$\$\$\$\$\$${end}/        /${dred}\$$  ${end}| ${dred}\$\$  ${end}/${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$      ${end}| ${dred}\$\$\$\$\$\$${end}/"
+
+        printf "%s\n" "| ${dred}\$\$  ${end}\\ ${dred}\$\$${end}| ${dred}\$\$ ${end}/${dred}\$\$${end}__  ${dred}\$\$${end}| ${dred}\$\$      ${end}| ${dred}\$\$${end}_  ${dred}\$\$       ${end}| ${dred}\$\$  ${end}| ${dred}\$\$ ${end}/${dred}\$\$${end}__  ${dred}\$\$${end}| ${dred}\$\$      ${end}| ${dred}\$\$${end}_  ${dred}\$\$${end}"
+
+        printf "%s\n" "| ${dred}\$\$\$\$\$\$\$${end}/| ${dred}\$\$${end}|  ${dred}\$\$\$\$\$\$\$${end}|  ${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$ ${end}\\  ${dred}\$\$      ${end}|  ${dred}\$\$\$\$\$\$/${end}|  ${dred}\$\$\$\$\$\$\$${end}|  ${dred}\$\$\$\$\$\$\$${end}| ${dred}\$\$ ${end}\\  ${dred}\$\$${end}"
+
+        printf "%s\n" "|_______/ |__/ \\_______/ \\_______/|__/  \\__/       \\______/  \\_______/ \\_______/|__/  \\__/"
+
+        sleep 0.05
+
+
+
+}
+
+#############################################################################################
+
+# Card methods
+
+#############################################################################################
+
+
+
+# Spades
+
+
+
+aceOfSpades() {
+
+        printf "%s\n" "${redWhite}.-------.${end}"
+
+        printf "%s\n" "${redWhite}|${whiteDarkGrey}A${end}${redWhite}.---. |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} S ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}A${end}${redWhite}|${end}"
+
+        printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+twoOfSpades() {
+
+        printf "%s\n" "${redWhite}.-------.${end}"
+
+        printf "%s\n" "${redWhite}|${whiteDarkGrey}2${end}${redWhite}.---. |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} S ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}2${end}${redWhite}|${end}"
+
+        printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+threeOfSpades() {
+
+        printf "%s\n" "${redWhite}.-------.${end}"
+
+        printf "%s\n" "${redWhite}|${whiteDarkGrey}3${end}${redWhite}.---. |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} S ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}3${end}${redWhite}|${end}"
+
+        printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+fourOfSpades() {
+
+        printf "%s\n" "${redWhite}.-------.${end}"
+
+        printf "%s\n" "${redWhite}|${whiteDarkGrey}4${end}${redWhite}.---. |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} S ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}4${end}${redWhite}|${end}"
+
+        printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+fiveOfSpades() {
+
+        printf "%s\n" "${redWhite}.-------.${end}"
+
+        printf "%s\n" "${redWhite}|${whiteDarkGrey}5${end}${redWhite}.---. |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} S ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}5${end}${redWhite}|${end}"
+
+        printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+sixOfSpades() {
+
+        printf "%s\n" "${redWhite}.-------.${end}"
+
+        printf "%s\n" "${redWhite}|${whiteDarkGrey}6${end}${redWhite}.---. |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} S ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}6${end}${redWhite}|${end}"
+
+        printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+sevenOfSpades() {
+
+        printf "%s\n" "${redWhite}.-------.${end}"
+
+        printf "%s\n" "${redWhite}|${whiteDarkGrey}7${end}${redWhite}.---. |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} S ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}7${end}${redWhite}|${end}"
+
+        printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+eightOfSpades() {
+
+        printf "%s\n" "${redWhite}.-------.${end}"
+
+        printf "%s\n" "${redWhite}|${whiteDarkGrey}8${end}${redWhite}.---. |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} S ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}8${end}${redWhite}|${end}"
+
+        printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+nineOfSpades() {
+
+        printf "%s\n" "${redWhite}.-------.${end}"
+
+        printf "%s\n" "${redWhite}|${whiteDarkGrey}9${end}${redWhite}.---. |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} S ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}9${end}${redWhite}|${end}"
+
+        printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+tenOfSpades() {
+
+        printf "%s\n" "${redWhite}.-------.${end}"
+
+        printf "%s\n" "${redWhite}|${whiteDarkGrey}10${end}${redWhite}---. |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} S ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| '---${whiteDarkGrey}10${end}${redWhite}|${end}"
+
+        printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+jackOfSpades() {
+
+        printf "%s\n" "${redWhite}.-------.${end}"
+
+        printf "%s\n" "${redWhite}|${whiteDarkGrey}J${end}${redWhite}.---. |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} S ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}J${end}${redWhite}|${end}"
+
+        printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+queenOfSpades() {
+
+        printf "%s\n" "${redWhite}.-------.${end}"
+
+        printf "%s\n" "${redWhite}|${whiteDarkGrey}Q${end}${redWhite}.---. |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} S ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}Q${end}${redWhite}|${end}"
+
+        printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+kingOfSpades() {
+
+        printf "%s\n" "${redWhite}.-------.${end}"
+
+        printf "%s\n" "${redWhite}|${whiteDarkGrey}K${end}${redWhite}.---. |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} S ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+        printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}K${end}${redWhite}|${end}"
+
+        printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+# Hearts
+
+
+
+
+
+twoOfHearts() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}2${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} H ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}2${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+threeOfHearts() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}3${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} H ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}3${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+fourOfHearts() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}4${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} H ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}4${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+fiveOfHearts() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}5${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} H ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}5${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+sixOfHearts() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}6${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} H ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}6${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+sevenOfHearts() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}7${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} H ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}7${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+eightOfHearts() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}8${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} H ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}8${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+nineOfHearts() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}9${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} H ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}9${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+aceOfHearts() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}A${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} H ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}A${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+kingOfHearts() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}K${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} H ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}K${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+queenOfHearts() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}Q${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} H ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}Q${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+jackOfHearts() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}J${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} H ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}J${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+tenOfHearts() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}10${end}${redWhite}---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} H ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---${yellowDarkRed}10${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+# Diamonds
+
+
+
+
+
+twoOfDiamonds() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}2${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} D ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}2${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+threeOfDiamonds() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}3${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} D ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}3${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+fourOfDiamonds() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}4${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} D ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}4${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+fiveOfDiamonds() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}5${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} D ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}5${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+sixOfDiamonds() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}6${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} D ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}6${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+sevenOfDiamonds() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}7${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} D ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}7${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+eightOfDiamonds() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}8${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} D ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}8${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+nineOfDiamonds() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}9${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} D ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}9${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+aceOfDiamonds() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}A${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} D ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}A${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+kingOfDiamonds() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}K${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} D ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}K${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+queenOfDiamonds() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}Q${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} D ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}Q${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+jackOfDiamonds() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}J${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} D ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${yellowDarkRed}J${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+tenOfDiamonds() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${yellowDarkRed}10${end}${redWhite}---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed} D ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${yellowDarkRed}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---${yellowDarkRed}10${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+# Clubs
+
+
+
+
+
+twoOfClubs() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${whiteDarkGrey}2${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} C ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}2${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+threeOfClubs() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${whiteDarkGrey}3${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} C ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}3${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+fourOfClubs() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${whiteDarkGrey}4${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} C ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}4${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+fiveOfClubs() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${whiteDarkGrey}5${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} C ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}5${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+sixOfClubs() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${whiteDarkGrey}6${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} C ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}6${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+sevenOfClubs() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${whiteDarkGrey}7${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} C ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}7${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+eightOfClubs() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${whiteDarkGrey}8${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} C ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}8${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+nineOfClubs() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${whiteDarkGrey}9${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} C ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}9${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+aceOfClubs() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${whiteDarkGrey}A${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} C ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}A${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+kingOfClubs() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${whiteDarkGrey}K${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} C ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}K${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+queenOfClubs() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${whiteDarkGrey}Q${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} C ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}Q${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+jackOfClubs() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${whiteDarkGrey}J${end}${redWhite}.---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} C ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---'${whiteDarkGrey}J${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+tenOfClubs() {
+
+    printf "%s\n" "${redWhite}.-------.${end}"
+
+    printf "%s\n" "${redWhite}|${whiteDarkGrey}10${end}${redWhite}---. |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey} C ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| :${end}${whiteDarkGrey}   ${end}${redWhite}: |${end}"
+
+    printf "%s\n" "${redWhite}| '---${whiteDarkGrey}10${end}${redWhite}|${end}"
+
+    printf "%s\n" "${redWhite}'-------'${end}"
+
+}
+
+
+
+# Back of the Card
+
+
+
+backOfCard() {
+
+    printf "%s\n" "${blackRed}.-------.${end}"
+
+    printf "%s\n" "${blackRed}|${end}${yellowDarkRed}*'*'*'*${end}${blackRed}|${end}"
+
+    printf "%s\n" "${blackRed}|${end}${yellowDarkRed}'*'*'*'${end}${blackRed}|${end}"
+
+    printf "%s\n" "${blackRed}|${end}${yellowDarkRed}*'*'*'*${end}${blackRed}|${end}"
+
+    printf "%s\n" "${blackRed}|${end}${yellowDarkRed}'*'*'*'${end}${blackRed}|${end}"
+
+    printf "%s\n" "${blackRed}|${end}${yellowDarkRed}*'*'*'*${end}${blackRed}|${end}"
+
+    printf "%s\n" "${blackRed}'-------'${end}"
+
+}
+
+
+
+# An Array to hold all of the cards in a stack
+
+
+
+deck=(aceOfSpades twoOfSpades jackOfSpades fourOfSpades fiveOfSpades sixOfSpades sevenOfSpades eightOfSpades nineOfSpades tenOfSpades threeOfSpades queenOfSpades kingOfSpades aceOfHearts twoOfHearts threeOfHearts fourOfHearts fiveOfHearts sixOfHearts sevenOfHearts eightOfHearts nineOfHearts tenOfHearts jackOfHearts queenOfHearts kingOfHearts aceOfDiamonds twoOfDiamonds threeOfDiamonds fourOfDiamonds fiveOfDiamonds sixOfDiamonds sevenOfDiamonds eightOfDiamonds nineOfDiamonds tenOfDiamonds jackOfDiamonds queenOfDiamonds kingOfDiamonds aceOfClubs twoOfClubs threeOfClubs fourOfClubs fiveOfClubs sixOfClubs sevenOfClubs eightOfClubs nineOfClubs tenOfClubs jackOfClubs queenOfClubs kingOfClubs)
+
+
+
+
+
+
+
+
+
+# Calculates Player Score by searching each card string in the player's hand
+
+# for it's value:
+
+# 2-9; ace equals 1 or 11 depending on the current score; all face cards and ten are 10
+
+
+
+playerCalcScore() {
+
+
+
+        playerScore=0
+
+
+
+        for ((i=0; i < ${#playerHand[*]}; i++)); do
+
+
+
+                if [[ "${playerHand[$i]}" == *"two"* ]]; then
+
+                        playerScore=$(( playerScore+ 2 ))
+
+                elif [[ "${playerHand[$i]}" == *"three"* ]]; then
+
+                        playerScore=$(( playerScore + 3 ))
+
+                elif [[ "${playerHand[$i]}" == *"four"* ]]; then
+
+                        playerScore=$(( playerScore + 4 ))
+
+                elif [[ "${playerHand[$i]}" == *"five"* ]]; then
+
+                        playerScore=$(( playerScore + 5 ))
+
+                elif [[ "${playerHand[$i]}" == *"six"* ]]; then
+
+                        playerScore=$(( playerScore + 6 ))
+
+                elif [[ "${playerHand[$i]}" == *"seven"* ]]; then
+
+                        playerScore=$(( playerScore + 7 ))
+
+                elif [[ "${playerHand[$i]}" == *"eight"* ]]; then
+
+                        playerScore=$(( playerScore + 8 ))
+
+                elif [[ "${playerHand[$i]}" == *"nine"* ]]; then
+
+                        playerScore=$(( playerScore + 9 ))
+
+                elif [[ "${playerHand[$i]}" == *"ace"* ]]; then
+
+                        if [[ "$playerScore" -gt 10 ]]; then
+
+                                playerScore=$(( playerScore + 1 ))
+
+                        else
+
+                                playerScore=$(( playerScore + 11 ))
+
+                        fi
+
+                else
+
+                        playerScore=$(( playerScore + 10 ))
+
+
+
+                fi
+
+        done
+
+}
+
+
+
+
+
+dealerCalcScore() {
+
+
+
+        dealerScore=0
+
+
+
+        for ((i=0; i < ${#dealerHand[*]}; i++)); do
+
+
+
+                if [[ "${dealerHand[$i]}" == *"two"* ]]; then
+
+                        dealerScore=$(( dealerScore + 2 ))
+
+                elif [[ "${dealerHand[$i]}" == *"three"* ]]; then
+
+                        dealerScore=$(( dealerScore + 3 ))
+
+                elif [[ "${dealerHand[$i]}" == *"four"* ]]; then
+
+                        dealerScore=$(( dealerScore + 4 ))
+
+                elif [[ "${dealerHand[$i]}" == *"five"* ]]; then
+
+                        dealerScore=$(( dealerScore + 5 ))
+
+                elif [[ "${dealerHand[$i]}" == *"six"* ]]; then
+
+                        dealerScore=$(( dealerScore + 6 ))
+
+                elif [[ "${dealerHand[$i]}" == *"seven"* ]]; then
+
+                        dealerScore=$(( dealerScore + 7 ))
+
+                elif [[ "${dealerHand[$i]}" == *"eight"* ]]; then
+
+                        dealerScore=$(( dealerScore + 8 ))
+
+                elif [[ "${dealerHand[$i]}" == *"nine"* ]]; then
+
+                        dealerScore=$(( dealerScore + 9 ))
+
+                elif [[ "${dealerHand[$i]}" == *"ace"* ]]; then
+
+                        if [[ "$dealerScore" -gt 10 ]]; then
+
+                                dealerScore=$(( dealerScore + 1 ))
+
+                        else
+
+                                dealerScore=$(( dealerScore + 11 ))
+
+                        fi
+
+                else
+
+                        dealerScore=$(( dealerScore + 10 ))
+
+
+
+                fi
+
+        done
+
+}
+
+
+
+
+
+
+
+showDeck() {
+
+        for ((i=0; i < ${#deck[*]}; i++)); do
+
+                "${deck[$i]}"
+
+                sleep 0.05
+
+        done
+
+}
+
+
+
+# Shuffle function
+
+# logic taken from my Java textbook:
+
+# "Introduction to Java Programming and Data Structures"
+
+# by Y. Daniel Liang
+
+
+
+shuffleDeck() {
+
+        for ((i=0; i < ${#deck[*]}; i++)); do
+
+
+
+                j=$(($RANDOM%${#deck[*]}))
+
+                temp=${deck[$i]}
+
+                deck[$i]=${deck[$j]}
+
+                deck[$j]=$temp
+
+        done
+
+}
+
+
+
+
+
+
+
+
+
+
+
+dealCards() {
+
+
+
+        dealerHand=()
+
+        playerHand=()
+
+        cardCount=0
+
+        shuffleDeck
+
+        playerHand+=("${deck[0]}" "${deck[2]}")
+
+        dealerHand+=("${deck[1]}" "${deck[3]}")
+
+        cardCount=4
+
+}
+
+
+
+hitPlayer() {
+
+
+
+        playerHand+=("${deck[$cardCount]}")
+
+        cardCount=$(( cardCount + 1 ))
+
+}
+
+
+
+
+
+hitDealer() {
+
+
+
+        dealerHand+=("${deck[$cardCount]}")
+
+        cardCount=$(( cardCount + 1 ))
+
+}
+
+
+
+
+
+dealerTurn() {
+
+
+
+        clear
+
+        dealerFinalStatus
+
+        sleep 1.5
+
+        if [[ "$dealerScore" -eq "$playerScore" ]]; then
+
+                tieScreen
+
+        elif [[ "$dealerScore" -gt "$playerScore" ]]; then
+
+                dealerWin
+
+        else
+
+
+        	while [[ "$playerScore" -gt "$dealerScore" ]]; do
+
+                	clear
+
+                	hitDealer
+
+                	dealerCalcScore
+
+                	dealerFinalStatus
+
+                	sleep 1.5
+
+        	done
+
+        	if [[ "$dealerScore" -gt 21 ]]; then
+
+                	dealerBust
+
+
+        	elif [[ "$dealerScore" -eq "$playerScore" ]]; then
+
+                	tieScreen
+
+
+		elif [[ "$dealerScore" -gt "$playerScore" && "$dealerScore" -le 21 ]]; then
+
+                	dealerWin
+
+		fi
+
+	fi 
+
+
+
+}
+
+
+
+initialRefreshScreen() {
+
+        sleep 0.5
+
+        printf "%s\n" "${cyn}DEALER'S HAND${end}"
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+
+
+
+
+        echo " "
+
+        printf "%s\n" "${grn}PLAYER'S HAND${end}"
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        printf "%s\n" "Score:${grn}?${end}"
+
+        sleep 0.3
+
+        clear
+
+
+
+        printf "%s\n" "${cyn}DEALER'S HAND${end}"
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+
+
+
+
+        echo " "
+
+        printf "%s\n" "${grn}PLAYER'S HAND${end}"
+
+        echo " "
+
+        "${playerHand[0]}"
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+
+
+        printf "%s\n" "Score:${grn}?${end}"
+
+        sleep 0.3
+
+
+
+        clear
+
+        printf "%s\n" "${cyn}DEALER'S HAND${end}"
+
+        echo " "
+
+        backOfCard
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+
+
+
+
+        echo " "
+
+        printf "%s\n" "${grn}PLAYER'S HAND${end}"
+
+        echo " "
+
+        "${playerHand[0]}"
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+
+
+        printf "%s\n" "Score:${grn}?${end}"
+
+        sleep 0.3
+
+
+
+        clear
+
+        printf "%s\n" "${cyn}DEALER'S HAND${end}"
+
+        echo " "
+
+        backOfCard
+
+        "${dealerHand[1]}"
+
+
+
+
+
+        echo " "
+
+        printf "%s\n" "${grn}PLAYER'S HAND${end}"
+
+        echo " "
+
+        "${playerHand[0]}"
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+        echo " "
+
+
+
+        printf "%s\n" "Score:${grn}?${end}"
+
+        sleep 0.3
+
+
+
+        clear
+
+        printf "%s\n" "${cyn}DEALER'S HAND${end}"
+
+        echo " "
+
+        backOfCard
+
+        "${dealerHand[1]}"
+
+
+
+
+
+        echo " "
+
+        printf "%s\n" "${grn}PLAYER'S HAND${end}"
+
+        echo " "
+
+        "${playerHand[0]}"
+
+        "${playerHand[1]}"
+
+
+
+        printf "%s\n" "Score:${grn}$playerScore${end}"
+
+
+
+}
+
+refreshScreen() {
+
+
+
+        dealerStatus
+
+        playerStatus
+
+
+
+}
+
+
+
+playerStatus() {
+
+
+
+        echo " "
+
+        printf "%s\n" "${grn}PLAYER'S HAND${end}"
+
+        echo " "
+
+        for ((i=0; i < ${#playerHand[*]} - 1; i++)); do
+
+                "${playerHand[$i]}"
+
+        done
+
+        for ((i=${#playerHand[*]} - 1; i < ${#playerHand[*]}; i++)); do
+
+                sleep 0.3
+
+                "${playerHand[$i]}"
+
+        done
+
+        printf "%s\n" "Score:${grn}$playerScore${end}"
+
+
+
+
+
+}
+
+playerFinalStatus() {
+
+
+
+        echo " "
+
+        printf "%s\n" "${grn}PLAYER'S HAND${end}"
+
+        echo " "
+
+        for ((i=0; i < ${#playerHand[*]}; i++)); do
+
+                "${playerHand[$i]}"
+
+        done
+
+        printf "%s\n" "Score:${grn}$playerScore${end}"
+
+
+
+
+
+}
+
+dealerStatus() {
+
+
+
+        printf "%s\n" "${cyn}DEALER'S HAND${end}"
+
+        echo " "
+
+        backOfCard
+
+        for ((i=1; i < ${#dealerHand[*]}; i++)); do
+
+                "${dealerHand[$i]}"
+
+        done
+
+
+
+
+
+}
+
+
+
+dealerFinalStatus() {
+
+
+
+        printf "%s\n" "${cyn}DEALER'S HAND${end}"
+
+        echo " "
+
+        for ((i=0; i < ${#dealerHand[*]} - 1 ; i++)); do
+
+                "${dealerHand[$i]}"
+
+        done
+
+        for ((i=${#dealerHand[*]} - 1; i < ${#dealerHand[*]}; i++)); do
+
+                sleep 0.3
+
+                "${dealerHand[$i]}"
+
+        done
+
+        printf "%s\n" "Dealer Score:${cyn}$dealerScore${end}"
+
+}
+
+
+
+hitOrStay() {
+
+
+
+        echo " "
+
+        read -p "Press \"${dred}H${end}\" to hit, or press \"${dgrn}S${end}\" to stay: " response
+
+
+	if [[ "$response" == 'h' || "$response" == 'H' ]]; then
+
+                hitPlayer
+
+                playerCalcScore
+
+                if [[ $playerScore -gt 21 ]];then
+
+                        playerBust
+
+                fi
+
+                clear
+
+                refreshScreen
+
+                hitOrStay
+
+        elif  [[ "$response" == 's' || "$response" == 'S' ]]; then
+
+                dealerTurn
+
+        fi
+
+}
+
+
+
+
+
+
+
+playOrExit() {
+
+
+
+
+        sleep 1.25
+
+        read -p "Would you like to play again?: " response
+
+        if [[ "$response" == "yes" || "$response" == "Yes" || "$response" == "y" || "$response" == "Y" ]]; then
+
+                clear
+
+                main
+
+        else
+
+                showDeck
+		exit
+
+        fi
+
+}
+
+
+
+
+
+main() {
+
+        clear
+
+        sleep 1
+
+        dealCards
+
+        playerCalcScore
+
+        dealerCalcScore
+
+        initialRefreshScreen
+
+        #refreshScreen
+
+        #check for blackjacks
+
+        if [[ $playerScore -eq 21 && $dealerScore -lt 21 ]];then
+
+                sleep 2
+
+		playerBlackJack
+
+        elif [[ $dealerScore -eq 21 && $playerScore -lt 21 ]];then
+
+                dealerBlackJack
+
+        elif [[ $playerScore -eq 21 && $dealerScore -eq 21 ]];then
+
+                tieScreen
+
+        fi
+
+        hitOrStay
+
+}
+
+
+
+playerBust() {
+
+        clear
+
+	playerStatus
+
+        echo "You went over 21! You lost!"
+
+        playOrExit
+
+}
+
+
+
+dealerBust() {
+
+        clear
+
+	dealerFinalStatus
+
+	playerStatus
+
+        echo "Dealer went over 21, you win!"
+
+        playOrExit
+
+
+
+}
+
+
+
+playerBlackJack() {
+
+        echo "BlackJack! You win!"
+
+	sleep 2
+
+        flashScreenBlackJack
+
+	flashScreenBlackJack
+
+	flashScreenBlackJack
+
+        playOrExit
+
+}
+
+
+
+dealerBlackJack() {
+
+	clear
+
+        dealerFinalStatus
+
+	playerStatus
+
+        echo "Dealer has BlackJack"
+
+        playOrExit
+
+}
+
+dealerWin() {
+
+        clear
+
+	dealerFinalStatus
+
+	playerStatus
+
+        echo "Dealer Wins!"
+
+        playOrExit
+
+}
+
+
+
+tieScreen() {
+
+        clear
+
+	dealerFinalStatus
+
+	playerStatus
+
+        echo "Tie Game!"
+
+        playOrExit
+
+}
+
+welcomeScreen

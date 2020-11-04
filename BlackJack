@@ -2321,9 +2321,13 @@ playOrExit() {
 
         sleep 1.25
 
-        read -p "Would you like to play again?: " response
+        unset response
 
-        if [[ "$response" == "yes" || "$response" == "Yes" || "$response" == "y" || "$response" == "Y" ]]; then
+        while [[ ! "$response" =~ ^(y|Y|n|N){1}(e|E|o|O){0,1}(s|S){0,1}$ ]]; do
+                read -p "Would you like to play again?: " response
+        done
+
+        if [[ "$response" =~ (y|Y) ]]; then
 
                 clear
 
@@ -2332,7 +2336,7 @@ playOrExit() {
         else
 
                 showDeck
-		exit
+                exit
 
         fi
 

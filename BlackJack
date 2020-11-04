@@ -2279,10 +2279,13 @@ hitOrStay() {
 
         echo " "
 
-        read -p "Press \"${dred}H${end}\" to hit, or press \"${dgrn}S${end}\" to stay: " response
+        unset response
+        
+        while [[ ! "$response" =~ (h|H|s|S) ]]; do
+                read -p "Press \"${dred}H${end}\" to hit, or press \"${dgrn}S${end}\" to stay: " response
+        done
 
-
-	if [[ "$response" == 'h' || "$response" == 'H' ]]; then
+        if [[ "$response" =~ (h|H) ]]; then
 
                 hitPlayer
 
@@ -2300,7 +2303,7 @@ hitOrStay() {
 
                 hitOrStay
 
-        elif  [[ "$response" == 's' || "$response" == 'S' ]]; then
+        elif  [[ "$response" =~ (s|S) ]]; then
 
                 dealerTurn
 

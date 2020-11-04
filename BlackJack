@@ -2321,7 +2321,7 @@ playOrExit() {
 
         sleep 1.25
 
-        read -p "Would you like to play again?: " response
+        read -p "Would you like to play again? (y/n): " response
 
         if [[ "$response" == "yes" || "$response" == "Yes" || "$response" == "y" || "$response" == "Y" ]]; then
 
